@@ -48,3 +48,6 @@ fight_keyboard = [[normal_attack_text],
                   [shout_text],
                   [back_text]]
 start = "Ваш дом"
+
+spawn_mod = 10
+podvohs_limit = 100

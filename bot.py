@@ -13,6 +13,7 @@ from config import token
 from consts import normal_attack_text, shout_text, fight_text, love_text, eat_text, go_text, drink_text, inventory_text, \
     trade_text, pray_text, sit_text, escape_text, count_text, leaderboard_text, transitions, transitions_text, \
     custom_keyboard, fight_keyboard
+import consts
 
 updater = Updater(token)
 
@@ -21,7 +22,6 @@ dispatcher = updater.dispatcher
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 
 podvohs = 0
-
 
 def escape(user, text):
     user.reply("Вы попытались выбраться, но не получилось. Нужно постороннее вмешательство.\n")
@@ -82,9 +82,9 @@ def intervention(user):
 
 def multiply():
     global podvohs
-    if podvohs < 500:
+    if podvohs < consts.podvohs_limit:
         podvohs += 1
-    threading.Timer(1, multiply).start()
+    threading.Timer(20/consts.spawn_mod, multiply).start()
 
 
 multiply()
@@ -155,8 +155,8 @@ def leaderboard(user, text):
     user.reply("Лидерборд:\n\n")
     for p in users:
         player = users[p]
-        user.reply(player.name + ": " + str(player.gold) + " золота\n" +
-                   "    Уровень: " + str(player.level) + "  Убито подвохов: " + str(player.kill_count))
+        user.reply(player.name + " -  " + " Уровень: " + str(player.level) + "\n" +
+                   "   Золото: " + str(player.gold) + "  Убито подвохов: " + str(player.kill_count))
     user.reply("\nЭто псевдолидерборд. Просто показывает всех Кириллов.\n")
     user.send_message()
 
@@ -174,6 +174,7 @@ def fight(user, text):
         elif text == normal_attack_text:
             normal_attack(user, text)
         else:
+            user.status = 'normal'
             user.send_message()
     else:
         if podvohs <= 0:

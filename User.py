@@ -1,7 +1,9 @@
-import telegram
 import math
 
+import telegram
+
 from consts import drink_text, trade_text, pray_text, sit_text, escape_text, count_text, custom_keyboard, start
+import consts
 
 
 class User:
@@ -25,6 +27,8 @@ class User:
         self.exp = 0
 
     def level_up(self):
+        consts.spawn_mod += 1
+        consts.podvohs_limit += 30
         self.dmg += int(math.pow(1.2, self.level))
         self.max_hp += int(math.pow(1.2, self.level) * 5)
         self.hp = self.max_hp
